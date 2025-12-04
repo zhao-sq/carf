@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Leverage adpative control learning method in dexterous manipulation to improve sim-to-real performance.">
+  <meta name="keywords" content="Dexterous manipulation, Sim-to-real transfer, Adaptive control, Reinforcement Learning">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DexCtrl: Towards Sim-to-Real Dexterity with Adaptive Controller Learning</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" type="image/png" href="./static/images/favicon.png">
+  <!-- <link rel="icon" href="./static/images/favicon.svg"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav> -->
+<!-- 
+<style>
+              .publication-title {
+                  font-size: 2.6em; /* change title font size */
+              }
+            </style>
+            <h1 class="title is-0 publication-title">M<sup>2</sup>Diffuser: Diffusion-based Trajectory Optimization for Mobile Manipulation in 3D Scenes</h1>
+
+            <p style="color: red; font-weight: bold; font-size: 24px;">
+              IEEE Transactions on Pattern Analysis and Machine Intelligence (T-PAMI) 2025
+            </p> -->
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">DexCtrl: Towards Sim-to-Real Dexterity with Adaptive Controller Learning</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="#" class="author-link is-disabled">Shuqi Zhao</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="#" class="author-link is-disabled">Ke Yang</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://thomaschen98.github.io">Yuxin Chen</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://github.com/chenran-li">Chenran Li</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://yichen928.github.io">Yichen Xie</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://xiang-zhang-98.github.io">Xiang Zhang</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://changhaowang.github.io">Changhao Wang</a><sup>1</sup>
+            </span>
+            <span class="author-block">
+              <a href="https://me.berkeley.edu/people/masayoshi-tomizuka">Masayoshi Tomizuka</a><sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>University of California, Berkeley</span>
+            <span class="author-block"><sup>2</sup>New York University</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2505.00991"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <!-- <a href="https://github.com/google/nerfies" -->
+                <a
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (Coming soon)</span>
+                  </a>
+              </span>
+                  </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <section class="hero">
+      <div class="hero-body has-text-centered">
+        <img
+          src="./static/images/teaserv6.png"
+          alt="Nerfies teaser"
+          class="mx-auto"
+          style="max-width:100%; height:auto;"
+          loading="lazy"
+          decoding="async"
+        >
+        <h2 class="subtitle">
+          <b>DexCtrl: </b>Compared to previous work with only action prediction (upper left), <b>DexCtrl</b> (lower left) jointly predicts both action and control parameters, significantly reducing human labor for tuning and achieving better performance on two contact-rich manipulation tasks: rotation and flipping.
+        </h2>
+      </div>
+    </section>
+  </div>
+</section>
+
+
+<!-- <section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-steve">
+          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/steve.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-chair-tp">
+          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/chair-tp.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-shiba">
+          <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/shiba.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-fullbody">
+          <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/fullbody.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-blueshirt">
+          <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/blueshirt.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-mask">
+          <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/mask.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-coffee">
+          <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/coffee.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-toby">
+          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/toby2.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Dexterous manipulation has seen remarkable progress in recent years, with policies capable of executing many complex and contact-rich tasks in simulation. 
+            However, transferring these policies from simulation to real world remains a significant challenge. 
+            One important issue is <b>the mismatch in low-level controller dynamics</b>, where identical trajectories can lead to vastly different contact forces and behaviors when control parameters vary. 
+            Existing approaches often rely on manual tuning or controller randomization, which can be labor-intensive, task-specific, and introduce significant training difficulty. 
+          </p>
+          <p>
+            In this work, we propose <b>a framework that jointly learns actions and controller parameters based on the historical information of both trajectory and controller.</b> 
+            This adaptive controller adjustment mechanism allows the policy to automatically tune control parameters during execution, thereby mitigating the sim-to-real gap without extensive manual tuning or excessive randomization.
+            Moreover, by explicitly providing controller parameters as part of the observation, our approach facilitates better reasoning over force interactions and improves robustness in real-world scenarios. 
+            Experimental results demonstrate that our method achieves improved transfer performance across a variety of dexterous tasks involving variable force conditions.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+      <h2 class="title is-3 has-text-centered">Methodology</h2>
+      </div>
+    </div>
+    <br>
+    <img src="static/images/overviewv8.png" style="width:100%; margin-right:auto; margin-left:auto; margin-top:auto;">
+    <p>
+      <b>(a) Open-loop training.</b> During training, we first collect sufficient data using an oracle policy trained in simulation with diverse object physical parameters.
+      Then we distill two separate models to predict desired action and control parameters, respectively, based on historical information extracted from the collected dataset.
+      <b>(b) Closed-loop inference.</b> During inference, we recursively predict desired actions for the next step given current and historical observations, and then predict control parameters for the next step based on the generated desired action.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+      <h2 class="title is-3 has-text-centered">Real-world performance</h2>
+      </div>
+    </div>
+    <p>
+      DexCtrl realizes <b>zero-shot transfer</b> among <b>different objects</b> in the real-world setup.
+    </p>
+    <div class="content has-text-centered">
+      <video id="replay-video"
+                 controls
+                 muted
+                 preload
+                 playsinline
+                 width="100%">
+            <source src="./static/videos/main_video.mp4"
+                    type="video/mp4">
+          </video>
+    </div>
+    <br>
+    <p>
+      To ensure DexCtrl performance over <b>confounding factors (mass and friction)</b>, we use a hollow cube for mass experiments and vary its mass by inserting different internal objects, and use cubes of different textures with the same mass for friction experiments.
+    </p>
+    <div class="content has-text-centered">
+      <video id="replay-video"
+                 controls
+                 muted
+                 preload
+                 playsinline
+                 width="100%">
+            <source src="./static/videos/other_video.mp4"
+                    type="video/mp4">
+          </video>
+    </div>
+    <!-- <div class="content has-text-centered"> -->
+    <br>
+    <p>
+      Through comparsion between performances among different physical parameters, we investigate how do the learned controller parameters affect dexterous manipulation performance and validate that <b>variations in control parameters are closely related to object-specific physical configurations</b>, aiming to provide better adaptation to varying force requirements.
+    </p>
+    <br>
+    <div class="content has-text-centered"> 
+    <img src="static/images/plot.png" style="width:100%; margin-right:auto; margin-left:auto; margin-top:auto;">
+    </div>
+    <p>
+      We also test DexCtrl <b>flipping</b> performance on real-world setting. This validates that our method can deal with complicated situation that includes dynamic contact among object, robot and ground floor(fixed platform).
+    </p>
+    <br>
+    <div class="content has-text-centered"> 
+      <video id="replay-video"
+                controls
+                muted
+                preload
+                playsinline
+                width="70%">
+          <source src="./static/videos/flipping.mp4"
+                  type="video/mp4">
+        </video>
+      </div>
+  </div>
+  </div>
+</section>
+
+<!-- <section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+      <h2 class="title is-3 has-text-centered">Rotation performance for different physical parameters</h2>
+      </div>
+    </div>
+    <p>
+      To ensure <b>DexCtrl</b> performance over confounding factors, we use a hollow cube for mass experiments and vary its mass by inserting different internal objects, and use cubes of different textures with the same mass for friction experiments.
+      Also, through comparsion between different performance, we investigate how do the learned controller parameters affect dexterous manipulation performance and validate that variations in control parameters are closely related to object-specific configurations, aiming to provide better adaptation to varying force requirements.
+    </p>
+    <div class="content has-text-centered">
+      <video id="replay-video"
+                 controls
+                 muted
+                 preload
+                 playsinline
+                 width="100%">
+            <source src="./static/videos/other_video.mp4"
+                    type="video/mp4">
+          </video>
+    </div>
+  </div>
+</section> -->
+
+<!-- <section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+      <h2 class="title is-3 has-text-centered">Flipping performance</h2>
+      </div>
+    </div>
+    <div class="content has-text-centered">
+      <video id="replay-video"
+                 controls
+                 muted
+                 preload
+                 playsinline
+                 width="70%">
+            <source src="./static/videos/flipping.mp4"
+                    type="video/mp4">
+          </video>
+    </div>
+  </div>
+</section> -->
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3 has-text-centered">BibTeX</h2>
+    <pre><code>@article{zhao2025dexctrl,
+  title={DexCtrl: Towards Sim-to-Real Dexterity with Adaptive Controller Learning},
+  author={Zhao, Shuqi and Yang, Ke and Chen, Yuxin and Li, Chenran and Xie, Yichen and Zhang, Xiang and Wang, Changhao and Tomizuka, Masayoshi},
+  journal={arXiv preprint arXiv:2505.00991},
+  year={2025}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            Website template adapted from <a
+              href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
