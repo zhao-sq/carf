@@ -105,19 +105,19 @@
               <a href="https://zhao-sq.github.io">Shuqi Zhao</a>,
             </span>
             <span class="author-block">
-              <a href="#" class="author-link is-disabled">Cheng-En Wu</a>
+              <a href="#" class="author-link is-disabled">Cheng-En Wu</a>,
             </span>
             <span class="author-block">
-              <a href="#" class="author-link is-disabled">Bang Du</a>
+              <a href="#" class="author-link is-disabled">Bang Du</a>,
             </span>
             <span class="author-block">
               <a href="https://yichen928.github.io">Yichen Xie</a>,
             </span>
             <span class="author-block">
-              <a href="https://yixiaowang7.github.io">Yixiao Wang</a><sup>1</sup>,
+              <a href="https://yixiaowang7.github.io">Yixiao Wang</a>,
             </span>
             <span class="author-block">
-              <a href="https://me.berkeley.edu/people/masayoshi-tomizuka">Masayoshi Tomizuka</a><sup>1</sup>
+              <a href="https://me.berkeley.edu/people/masayoshi-tomizuka">Masayoshi Tomizuka</a>
             </span>
           </div>
 
@@ -163,7 +163,7 @@
     <section class="hero">
       <div class="hero-body has-text-centered">
         <img
-          src="./static/images/teaserv6.png"
+          src="./static/images/teaser.png"
           alt="Nerfies teaser"
           class="mx-auto"
           style="max-width:100%; height:auto;"
@@ -171,7 +171,7 @@
           decoding="async"
         >
         <h2 class="subtitle">
-          <b>DexCtrl: </b>Compared to previous work with only action prediction (upper left), <b>DexCtrl</b> (lower left) jointly predicts both action and control parameters, significantly reducing human labor for tuning and achieving better performance on two contact-rich manipulation tasks: rotation and flipping.
+          <b>CARF</b> leverages a crucial yet largely underexplored source of data: <span class="red-text">Failure-Critical Segments</span>. It further formulates an attraction-repulsion flow-matching policy that pulls the policy toward the correct action distribution while pushing it away from failure distributions.
         </h2>
       </div>
     </section>
@@ -283,7 +283,7 @@
       </div>
     </div>
     <br>
-    <img src="static/images/overviewv8.png" style="width:100%; margin-right:auto; margin-left:auto; margin-top:auto;">
+    <img src="static/images/overview.png" style="width:100%; margin-right:auto; margin-left:auto; margin-top:auto;">
     <p>
       <b>(a) Open-loop training.</b> During training, we first collect sufficient data using an oracle policy trained in simulation with diverse object physical parameters.
       Then we distill two separate models to predict desired action and control parameters, respectively, based on historical information extracted from the collected dataset.
