@@ -311,8 +311,7 @@
       </div>
     </div>
     <p>
-      DexCtrl realizes <b>zero-shot transfer</b> among <b>different objects</b> in the real-world setup.
-    </p>
+      Manipulation tasks for evaluating our method cover diverse manipulation modes, such as Basic Interaction, Visual Object Detection, Precise Manipulation and Long Horizon Capability.
     <div class="content has-text-centered">
       <video id="replay-video"
                  controls
@@ -334,7 +333,7 @@
       </div>
     </div>
     <p>
-      DexCtrl realizes <b>zero-shot transfer</b> among <b>different objects</b> in the real-world setup.
+      CARF outperforms all baseline methods in both simulation tasks and real-world tasks, demonstrating its effectiveness in leveraging both successful and failed demonstrations for improved policy learning.
     </p>
     <div class="content has-text-centered">
       <video id="replay-video"
@@ -349,7 +348,7 @@
     </div>
     <br>
     <p>
-      To ensure DexCtrl performance over <b>confounding factors (mass and friction)</b>, we use a hollow cube for mass experiments and vary its mass by inserting different internal objects, and use cubes of different textures with the same mass for friction experiments.
+      CARF addresses several key weaknesses of imitation learning, such as Accuracy, Smoothness, Stability, and Efficiency.
     </p>
     <div class="content has-text-centered">
       <video id="replay-video"
@@ -365,7 +364,7 @@
     <!-- <div class="content has-text-centered"> -->
     <br>
     <p>
-      Through comparsion between performances among different physical parameters, we investigate how do the learned controller parameters affect dexterous manipulation performance and validate that <b>variations in control parameters are closely related to object-specific physical configurations</b>, aiming to provide better adaptation to varying force requirements.
+      We visualize the sequence-level importance scores derived from the scorer predictions within a failed trajectory. We observe that the importance scores soar upon the completion of a subtask, while they drop below zero when obvious errors occur or the trajectory starts deviating, which is fully consistent with our expectation.
     </p>
     <br>
     <div class="content has-text-centered">
@@ -390,10 +389,6 @@
                     type="video/mp4">
           </video>
     </div>
-    <p>
-      We also test DexCtrl <b>flipping</b> performance on real-world setting. This validates that our method can deal with complicated situation that includes dynamic contact among object, robot and ground floor(fixed platform).
-    </p>
-    <br>
   </div>
   </div>
 </section>
