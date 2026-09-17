@@ -129,7 +129,7 @@
             <div class="publication-links">
               <!-- PDF Link. -->
               <span class="link-block">
-                <a href="https://arxiv.org/pdf/2505.00991"
+                <a href="./static/ICRA2027_CARF-5.pdf"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fas fa-file-pdf"></i>
@@ -166,7 +166,7 @@
           src="./static/images/teaser.png"
           alt="Nerfies teaser"
           class="mx-auto"
-          style="max-width:100%; height:auto;"
+          style="max-width:70%; height:auto;"
           loading="lazy"
           decoding="async"
         >
@@ -245,18 +245,31 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Dexterous manipulation has seen remarkable progress in recent years, with policies capable of executing many complex and contact-rich tasks in simulation. 
-            However, transferring these policies from simulation to real world remains a significant challenge. 
-            One important issue is <b>the mismatch in low-level controller dynamics</b>, where identical trajectories can lead to vastly different contact forces and behaviors when control parameters vary. 
-            Existing approaches often rely on manual tuning or controller randomization, which can be labor-intensive, task-specific, and introduce significant training difficulty. 
+            The collection process of expert demonstrations for robot manipulation inevitably produces failure action trajectories. 
+            Existing methods either ignore failures, or reuse some failed trajectories through offline reinforcement learning or similarity-based method. 
+            However, it is often ignored that each failed trajectory may contain heterogeneous segments: some segments still make task progress, while others involve critical mistakes that the policy should avoid. 
           </p>
           <p>
-            In this work, we propose <b>a framework that jointly learns actions and controller parameters based on the historical information of both trajectory and controller.</b> 
-            This adaptive controller adjustment mechanism allows the policy to automatically tune control parameters during execution, thereby mitigating the sim-to-real gap without extensive manual tuning or excessive randomization.
-            Moreover, by explicitly providing controller parameters as part of the observation, our approach facilitates better reasoning over force interactions and improves robustness in real-world scenarios. 
-            Experimental results demonstrate that our method achieves improved transfer performance across a variety of dexterous tasks involving variable force conditions.
+            To this end, we propose <b>CARF</b>, a Contrastive Attraction–Repulsion Framework for failure-guided flow matching that explicitly separates and leverages <b>both useful and harmful segments</b> in each imperfect demonstration for policy training.
+            CARF first learns an importance-based scorer from successful trajectories to estimate the contribution of each action segment to the task fulfillment. 
+            The scorer is then used to guide flow matching policy training, attracting the policy towards progressive segments while repelling it from failure-critical behaviors through a bounded contrastive objective. 
+            This attraction-repulsion process enables CARF to exploit both successful and failed demonstrations without coarse binary value bootstrapping or ambiguous similarity-based supervision. 
+            <!-- Experiments across simulated and real-world manipulation tasks show that CARF improves task success and execution robustness over baselines. -->
           </p>
         </div>
+        <!-- <div class="hero-body has-text-centered">
+        <img
+          src="./static/images/teaser.png"
+          alt="Nerfies teaser"
+          class="mx-auto"
+          style="max-width:70%; height:auto;"
+          loading="lazy"
+          decoding="async"
+        >
+        <h2 class="subtitle">
+          <b>CARF</b> leverages a crucial yet largely underexplored source of data: <span class="red-text">Failure-Critical Segments</span>. It further formulates an attraction-repulsion flow-matching policy that pulls the policy toward the correct action distribution while pushing it away from failure distributions.
+        </h2>
+      </div> -->
       </div>
     </div>
     <!--/ Abstract. -->
@@ -285,11 +298,32 @@
     <br>
     <img src="static/images/overview.png" style="width:100%; margin-right:auto; margin-left:auto; margin-top:auto;">
     <p>
-      <b>(a) Open-loop training.</b> During training, we first collect sufficient data using an oracle policy trained in simulation with diverse object physical parameters.
-      Then we distill two separate models to predict desired action and control parameters, respectively, based on historical information extracted from the collected dataset.
-      <b>(b) Closed-loop inference.</b> During inference, we recursively predict desired actions for the next step given current and historical observations, and then predict control parameters for the next step based on the generated desired action.
+      Overview framework of CARF. After <b>automatically labeling</b> success dataset based on subtask segmentation, CARF trains a <b>progress prediction scorer</b> that provides importance score for observation-action chunking sequence, which is used for <b>attraction-repulsion flow matching training</b>.
     </p>
   </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+      <h2 class="title is-3 has-text-centered">Manipulation Tasks</h2>
+      </div>
+    </div>
+    <p>
+      DexCtrl realizes <b>zero-shot transfer</b> among <b>different objects</b> in the real-world setup.
+    </p>
+    <div class="content has-text-centered">
+      <video id="replay-video"
+                 controls
+                 muted
+                 preload
+                 playsinline
+                 width="100%">
+            <source src="./static/videos/tasks.mp4"
+                    type="video/mp4">
+          </video>
+    </div>
 </section>
 
 <section class="section">
@@ -309,7 +343,7 @@
                  preload
                  playsinline
                  width="100%">
-            <source src="./static/videos/main_video.mp4"
+            <source src="./static/videos/baseline_comparison.mp4"
                     type="video/mp4">
           </video>
     </div>
@@ -324,7 +358,7 @@
                  preload
                  playsinline
                  width="100%">
-            <source src="./static/videos/other_video.mp4"
+            <source src="./static/videos/failure_mode.mp4"
                     type="video/mp4">
           </video>
     </div>
@@ -334,24 +368,32 @@
       Through comparsion between performances among different physical parameters, we investigate how do the learned controller parameters affect dexterous manipulation performance and validate that <b>variations in control parameters are closely related to object-specific physical configurations</b>, aiming to provide better adaptation to varying force requirements.
     </p>
     <br>
-    <div class="content has-text-centered"> 
-    <img src="static/images/plot.png" style="width:100%; margin-right:auto; margin-left:auto; margin-top:auto;">
+    <div class="content has-text-centered">
+      <video id="replay-video"
+                 controls
+                 muted
+                 preload
+                 playsinline
+                 width="100%">
+            <source src="./static/videos/abla1_fixed.mp4"
+                    type="video/mp4">
+          </video>
+    </div>
+    <div class="content has-text-centered">
+      <video id="replay-video"
+                 controls
+                 muted
+                 preload
+                 playsinline
+                 width="100%">
+            <source src="./static/videos/abla2_fixed.mp4"
+                    type="video/mp4">
+          </video>
     </div>
     <p>
       We also test DexCtrl <b>flipping</b> performance on real-world setting. This validates that our method can deal with complicated situation that includes dynamic contact among object, robot and ground floor(fixed platform).
     </p>
     <br>
-    <div class="content has-text-centered"> 
-      <video id="replay-video"
-                controls
-                muted
-                preload
-                playsinline
-                width="70%">
-          <source src="./static/videos/flipping.mp4"
-                  type="video/mp4">
-        </video>
-      </div>
   </div>
   </div>
 </section>
